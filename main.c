@@ -2,13 +2,14 @@
 #include <stdlib.h>
 
 /**
-  *  Tag des Jahres
+  *  Timelib
   *
-  *  Program, um zu berechnene der wie vielte Tag des Jahres die Eingabe ist
+  *  Kleine Library fÃ¼r nÃ¼tzliche Zeitfunktionen
   *
-  *  Datum: 14.01.20        Autor: Alexander Thielker
+  *  Datum: 11.02.20        Autor: Alexander Thielker
 **/
 
+void input_date(int*, int*, int*);
 int SichereIntEingabe(int, int);
 int day_of_the_year(int, int, int);
 int get_days_for_month(int, int);
@@ -20,8 +21,26 @@ int main()
 {
     //printf("%i", exists_date(1,1,1));
     //rintf("%i", get_days_for_month(2,2020));
-    printf("Tag des Jahres: %i\n", day_of_the_year(31, 12, 2018));
+
+    int day = 0, month = 0, year = 0;
+    input_date(&day, &month, &year);
+    printf("%i, %i, %i", day, month, year);
+    printf("Tag des Jahres: %i\n", day_of_the_year(day, month, year));
     return 0;
+}
+
+void input_date(int* day, int* month, int* year)
+{
+    int lday = 0, lmonth = 0, lyear = 0;
+    printf("Bitte geben sie das gewollte Jahr ein. ( > 1582)\n");
+    lyear = SichereIntEingabe(1582, 3000000);
+    printf("Bitte geben sie den gewollten Monat ein.\n (1 - 12)\n");
+    lmonth = SichereIntEingabe(1,12);
+    printf("Bitte geben sie den gewollten Tag ein. (1 - %i)\n", get_days_for_month(lmonth, lyear));
+    lday = SichereIntEingabe(1, get_days_for_month(lmonth, lyear));
+    *day = lday;
+    *month = lmonth;
+    *year = lyear;
 }
 
 int day_of_the_year(int day, int month, int year)
@@ -29,12 +48,12 @@ int day_of_the_year(int day, int month, int year)
     int total = 0;
     if (exists_date(day, month, year))
     {
-            // jeweils die tage in den Monaten zum gesamt hinzufügen
-        for (int i = 0; i < month - 1; i++)
+            // jeweils die tage in den Monaten zum gesamt hinzufï¿½gen
+        for (int i = 0; i < month; i++)
         {
             total += get_days_for_month(i, year);
         }
-        return total += day; // die eingegebenen tage zum gesamt zufügen
+        return total += day; // die eingegebenen tage zum gesamt zufï¿½gen
     }
     return -1;
 }
@@ -80,7 +99,7 @@ int is_leapyear(int year)
 
 int SichereIntEingabe(int aMin, int aMax)
 {
-    ///überprüft die eingabe und wiederholt bei falscheingaben
+    ///ï¿½berprï¿½ft die eingabe und wiederholt bei falscheingaben
     int eingabe = aMin - 1;
     while (eingabe < aMin)
     {
@@ -102,6 +121,7 @@ int SichereIntEingabe(int aMin, int aMax)
         eingabe = aMin - 1;
         fflush(stdin);
     }
+    return eingabe;
 }
 
 
