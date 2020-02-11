@@ -4,7 +4,7 @@
 /**
   *  Timelib
   *
-  *  Kleine Library für nützliche Zeitfunktionen
+  *  Kleine Library für nützliche Zeitfunktionen.
   *
   *  Datum: 11.02.20        Autor: Alexander Thielker
 **/
@@ -15,7 +15,7 @@ int day_of_the_year(int, int, int);
 int get_days_for_month(int, int);
 int exists_date(int, int, int);
 int is_leapyear(int);
-int valid_month_and_year(int, int);
+int _valid_month_and_year(int, int);
 
 int main()
 {
@@ -24,8 +24,9 @@ int main()
 
     int day = 0, month = 0, year = 0;
     input_date(&day, &month, &year);
-    printf("%i, %i, %i", day, month, year);
+    printf("%i, %i, %i\n", day, month, year);
     printf("Tag des Jahres: %i\n", day_of_the_year(day, month, year));
+    printf("%i", get_days_for_month(1,2019));
     return 0;
 }
 
@@ -45,7 +46,7 @@ void input_date(int* day, int* month, int* year)
 
 int day_of_the_year(int day, int month, int year)
 {
-    int total = 0;
+    int total = 1;
     if (exists_date(day, month, year))
     {
             // jeweils die tage in den Monaten zum gesamt hinzuf�gen
@@ -61,7 +62,7 @@ int day_of_the_year(int day, int month, int year)
 int get_days_for_month(int month, int year)
 {
     int days[12] = { 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (valid_month_and_year(month, year))
+    if (_valid_month_and_year(month, year))
     {
         days[1] = ((is_leapyear(year) == 1) // tage im februar setzen
                  ? 29
@@ -71,7 +72,7 @@ int get_days_for_month(int month, int year)
     return -1;
 }
 
-int valid_month_and_year(int month, int year)
+int _valid_month_and_year(int month, int year)
 {
     return (year <= 2400 && year >= 1582
         && month >= 1 && month <= 12);
@@ -79,7 +80,7 @@ int valid_month_and_year(int month, int year)
 
 int exists_date(int day, int month, int year)
 {
-    return (valid_month_and_year(month, year)
+    return (_valid_month_and_year(month, year)
         && day >= 1 && day <= get_days_for_month(month, year));
 }
 
@@ -123,6 +124,3 @@ int SichereIntEingabe(int aMin, int aMax)
     }
     return eingabe;
 }
-
-
-
