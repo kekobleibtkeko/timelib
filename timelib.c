@@ -162,11 +162,34 @@ void _print_weekday(int day)
 int get_calender_week(int day, int month, int year)
 {
     int currentDays = day_of_the_year(day, month, year);
+    int actualDay = get_weekday(day, month, year);
     int startWeekDay = _week_day_beginning(year);
-    int calenderWeek = (currentDays / 7) + (startWeekDay < 4);
-    return (calenderWeek == 0)
-        ? 52
-        : calenderWeek;
+    int mondayWeekOne = (startWeekDay <= 4 && startWeekDay > 0)
+        ? (2 - startWeekDay)
+        : (startWeekDay == 0)
+            ? 2
+            : (7 - startWeekDay + 2);
+
+    int calenderWeek = 0;
+
+    for (int i = mondayWeekOne; i <= currentDays; i += 7)
+    {
+        calenderWeek++;
+    }
+
+    if (calenderWeek == 0)
+    {
+        if (year == 1582)
+        {
+            return 53;
+        }
+        if (_week_day_beginning(year - 1) + is_leapyear(year - 1) == 4)
+        {
+            return 53;
+        }
+        return 52;
+    }
+    return calenderWeek;
 }
 
 /**
